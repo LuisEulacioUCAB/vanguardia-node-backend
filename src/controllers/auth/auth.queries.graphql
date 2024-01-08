@@ -1,0 +1,38 @@
+enum UsersSex{
+    FEMALE
+    MALE
+    NO_APPLY
+}
+
+type AuthPayload {
+    token: String
+    user: User
+}
+
+type User {
+    id: Int!
+    name: String!
+    email: String!
+    email_verified_at:String
+    password:String
+    remember_token:String
+    created_at:String
+    updated_at:String
+    avatar:String
+    sex:UsersSex
+    birthday:String
+}
+
+input UserWhereInput{
+    email:String
+}
+
+type Mutation {
+    signup(email: String!, password: String!, name: String!): AuthPayload
+    login(email: String!, password: String!): AuthPayload
+    signupWithGoogle(token:String!):AuthPayload
+}
+
+type Query{
+    user(where:UserWhereInput):User
+}
