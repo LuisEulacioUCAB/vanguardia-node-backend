@@ -10,6 +10,7 @@ const getTokenPayload = (token: string): TokenPayload => {
 export const authenticateMiddleware = (req: Request) => {
   if (req) {
     const authHeader = req.headers.authorization;
+    console.log('authHeader',authHeader);
     if (authHeader) {
       const token = authHeader.replace('Bearer ', '');
       if (!token) {
@@ -17,11 +18,11 @@ export const authenticateMiddleware = (req: Request) => {
       }
       const { userId } = getTokenPayload(token);
 
-      console.log('getTokenPayload(token)', getTokenPayload(token));
-
-      return userId;
+      return parseInt(userId);
     }
   }
 
   throw new Error('Not authenticated');
 };
+
+

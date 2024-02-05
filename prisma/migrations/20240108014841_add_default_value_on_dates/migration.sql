@@ -1,8 +1,0 @@
-/*
-  Warnings:
-
-  - You are about to alter the column `created_at` on the `users` table. The data in that column could be lost. The data in that column will be cast from `Timestamp(0)` to `Timestamp`.
-
-*/
--- AlterTable
-ALTER TABLE `users` MODIFY `created_at` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP(3);

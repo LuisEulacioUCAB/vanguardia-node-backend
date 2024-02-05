@@ -1,38 +1,21 @@
-enum UsersSex{
-    FEMALE
-    MALE
-    NO_APPLY
-}
+#import User from "../user/user.queries.graphql"
 
 type AuthPayload {
     token: String
     user: User
 }
 
-type User {
-    id: Int!
-    name: String!
-    email: String!
-    email_verified_at:String
-    password:String
-    remember_token:String
-    created_at:String
-    updated_at:String
-    avatar:String
-    sex:UsersSex
-    birthday:String
-}
-
-input UserWhereInput{
-    email:String
+type ForgotPasswordPayload {
+    success:Boolean
 }
 
 type Mutation {
-    signup(email: String!, password: String!, name: String!): AuthPayload
+    signup(email: String!, password: String!, name: String!, url:String!): AuthPayload
     login(email: String!, password: String!): AuthPayload
-    signupWithGoogle(token:String!):AuthPayload
+    googleSignup(token:String!, url: String):AuthPayload
+    appleSignup(token:String!, url: String):AuthPayload
+    facebookSignup(token:String!, url: String):AuthPayload
+    forgotPassword(email:String!, redirectUrl:String!, form:String!):ForgotPasswordPayload
+    changePassword(email:String!, password:String!, token: String!):AuthPayload
 }
 
-type Query{
-    user(where:UserWhereInput):User
-}

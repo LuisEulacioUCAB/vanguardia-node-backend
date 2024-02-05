@@ -78,10 +78,10 @@ CREATE TABLE `subscriptions` (
 -- CreateTable
 CREATE TABLE `user_social_providers` (
     `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
-    `created_at` TIMESTAMP(0) NULL,
-    `updated_at` TIMESTAMP(0) NULL,
-    `provider` VARCHAR(255) NOT NULL DEFAULT 'SYSTEM',
-    `user_id` BIGINT UNSIGNED NOT NULL DEFAULT 0,
+    `created_at` TIMESTAMP(0) NULL DEFAULT CURRENT_TIMESTAMP(0),
+    `updated_at` TIMESTAMP(0) NULL DEFAULT CURRENT_TIMESTAMP(0),
+    `provider` ENUM('SYSTEM', 'GOOGLE', 'FACEBOOK', 'APPLE') NOT NULL DEFAULT 'SYSTEM',
+    `user_id` INTEGER NOT NULL DEFAULT 0,
     `url_register` VARCHAR(255) NOT NULL,
     `provider_id` VARCHAR(255) NULL,
 
@@ -90,18 +90,33 @@ CREATE TABLE `user_social_providers` (
 
 -- CreateTable
 CREATE TABLE `users` (
-    `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
     `name` TEXT NOT NULL,
     `email` VARCHAR(255) NOT NULL,
     `email_verified_at` TIMESTAMP(0) NULL,
     `password` VARCHAR(255) NOT NULL DEFAULT '',
     `remember_token` VARCHAR(100) NULL,
-    `created_at` TIMESTAMP(0) NULL,
-    `updated_at` TIMESTAMP(0) NULL,
+    `created_at` TIMESTAMP(0) NULL DEFAULT CURRENT_TIMESTAMP(0),
+    `updated_at` TIMESTAMP(0) NULL DEFAULT CURRENT_TIMESTAMP(0),
     `avatar` LONGTEXT NULL,
     `sex` ENUM('FEMALE', 'MALE', 'NO_APPLY') NOT NULL DEFAULT 'NO_APPLY',
     `birthday` VARCHAR(255) NULL,
+    `role_id` INTEGER NULL,
 
     UNIQUE INDEX `users_email_unique`(`email`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
+CREATE TABLE `user_roles` (
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `name` ENUM('SUPER_ADMINISTRATOR', 'ADMINISTRATOR', 'USER') NOT NULL,
+
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- AddForeignKey
+ALTER TABLE `user_social_providers` ADD CONSTRAINT `user_social_providers_user_id_fkey` FOREIGN KEY (`user_id`) REFERENCES `users`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `users` ADD CONSTRAINT `users_role_id_fkey` FOREIGN KEY (`role_id`) REFERENCES `user_roles`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;

@@ -1,0 +1,124 @@
+enum UsersSex{
+    FEMALE
+    MALE
+    NO_APPLY
+}
+
+enum UserRoles{
+    SUPER_ADMINISTRATOR
+    ADMINISTRATOR
+    USER
+    EDITOR
+}
+
+enum SocialProviders{
+    SYSTEM
+    GOOGLE
+    FACEBOOK
+    APPLE
+}
+
+type UserRole{
+    id:Int
+    name: UserRoles
+}
+
+
+type UserSocialProviders{
+    id: Int!
+    created_at:String
+    updated_at:String
+    provider:SocialProviders
+    user_id:Int
+    provider_id:String
+    url_register:String
+    users:[User]
+}
+
+input File {
+    filename: String!
+    mimetype: String!
+    encoding: String!
+}
+
+type User {
+    id: Int!
+    name: String!
+    email: String!
+    email_verified_at:String
+    password:String
+    remember_token:String
+    created_at:String
+    updated_at:String
+    avatar:String
+    sex:UsersSex
+    birthday:String
+    social_providers:[UserSocialProviders]
+    role:UserRole
+}
+
+scalar Upload
+
+input UserInput {
+    id: Int!
+    name: String!
+    email: String!
+    email_verified_at:String
+    password:String
+    remember_token:String
+    created_at:String
+    updated_at:String
+    avatar:String
+    sex:UsersSex
+    birthday:String
+}
+
+input UpdateUserInput {
+    user: UserInput
+    file: Upload
+}
+
+
+
+input CreatedAtInput{
+    lte:String
+    gte:String
+}
+
+input StringFilter {
+    equals:String
+    in:[String]
+    notIn:[String]
+    contains:String
+}
+
+input UsersWhere{
+    created_at:CreatedAtInput
+    name: StringFilter
+}
+
+input UserProvidersWhere{
+    created_at:CreatedAtInput
+    provider:SocialProviders
+}
+
+type UsersPayload{
+    users:[User]
+    count:Int
+}
+
+type UserProviderPayload{
+    userProviders:[UserSocialProviders]
+    count:Int
+}
+
+type Mutation {
+    updateUser(data:UpdateUserInput):User
+
+}
+
+type Query{
+    currentUser:User
+    users(where:UsersWhere, limit:Int, skip:Int):UsersPayload
+    userProviders(where:UserProvidersWhere, limit:Int):UserProviderPayload
+}

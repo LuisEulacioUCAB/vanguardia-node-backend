@@ -2,5 +2,5 @@
 node_modules
 build
 prisma
-src/generated
-src/types
+src/generated/client
+src/utils/types.ts

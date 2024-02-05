@@ -1,0 +1,7 @@
+type RecaptchaResponse{
+    success:Boolean
+}
+
+type Mutation {
+    recaptcha(email: String!,  token:String!): RecaptchaResponse
+}

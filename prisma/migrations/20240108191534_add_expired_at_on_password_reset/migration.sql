@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE `password_reset` ADD COLUMN `expired_at` TIMESTAMP(0) NULL DEFAULT CURRENT_TIMESTAMP(0);
